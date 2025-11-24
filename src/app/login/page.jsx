@@ -1,10 +1,11 @@
 "use client";
 
-import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { FcGoogle } from "react-icons/fc";
+
+import { loginWithEmail, googleLogin } from "@/firebase/auth";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -13,26 +14,27 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
+  // Email + Password Login
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
 
-    const res = await signIn("credentials", {
-      email,
-      password,
-      redirect: false,
-    });
-
-    if (res?.error) {
+    try {
+      await loginWithEmail(email, password);
+      router.push("/");
+    } catch (error) {
       setError("Invalid email or password");
-    } else {
-      router.push("/dashboard");
-      router.refresh();
     }
   };
 
-  const googleLogin = () => {
-    signIn("google", { callbackUrl: "/dashboard" });
+  // Google Login
+  const handleGoogleLogin = async () => {
+    try {
+      await googleLogin();
+      router.push("/");
+    } catch (error) {
+      setError("Google login failed");
+    }
   };
 
   return (
@@ -73,14 +75,14 @@ export default function LoginPage() {
           </form>
 
           <button
-            onClick={googleLogin}
+            onClick={handleGoogleLogin}
             className="w-full flex items-center justify-center gap-3 border p-3 rounded-lg mt-4 hover:bg-gray-50"
           >
             <FcGoogle size={26} /> Continue with Google
           </button>
 
           <p className="text-center mt-4">
-            Don't have an account?
+            Don&apos;t have an account?
             <a href="/signup" className="text-blue-600 underline"> Create Account</a>
           </p>
         </div>

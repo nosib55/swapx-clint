@@ -7,7 +7,7 @@ export default function Footer() {
 
         {/* Left: Logo + Slogan */}
         <div className="text-center md:text-left mb-6 md:mb-0">
-          <img src="/logo.png" alt="logo" className="w-32 mx-auto md:mx-0" />
+          <img src="/Logo.png" alt="logo" className="w-32 mx-auto md:mx-0" />
           <p className="mt-3 text-gray-400">
             The smarter way to buy & sell second-hand products.
           </p>

@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { FcGoogle } from "react-icons/fc";
+
+// Firebase functions
+import { registerWithEmail, googleLogin } from "@/firebase/auth";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -15,57 +17,69 @@ export default function SignupPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  // ⭐ Register user using YOUR backend API
+  // Handle Email Signup
   const handleSignup = async (e) => {
     e.preventDefault();
     setError("");
 
-    const newUser = {
-      name,
-      email,
-      password,
-      photo,
-    };
-
     try {
-      const res = await fetch("https://swapx-server.onrender.com/users/register", {
+      // Create user in Firebase
+      const userCredential = await registerWithEmail(email, password);
+
+      const user = userCredential.user;
+
+      // Optional: Save additional fields to your backend
+      await fetch("https://swapx-server.onrender.com/users/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newUser),
+        body: JSON.stringify({
+          name,
+          email,
+          photo,
+          uid: user.uid,
+        }),
       });
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.message || "Registration failed");
-        return;
-      }
-
-      // After signup → automatically login
-      await signIn("credentials", {
-        email,
-        password,
-        callbackUrl: "/dashboard",
-      });
-      
+      router.push("/login");
     } catch (err) {
-      setError("Something went wrong.");
+      setError("Failed to sign up. Try again.");
+      console.log(err);
     }
   };
 
-  const googleSignup = () => {
-    signIn("google", { callbackUrl: "/dashboard" });
+  // Google Signup
+  const handleGoogleSignup = async () => {
+    try {
+      const result = await googleLogin();
+      const user = result.user;
+
+      // Optional: save user to your backend
+      await fetch("https://swapx-server.onrender.com/users/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: user.displayName,
+          email: user.email,
+          photo: user.photoURL,
+          uid: user.uid,
+        }),
+      });
+
+      router.push("/");
+    } catch (err) {
+      setError("Google signup failed.");
+    }
   };
 
   return (
     <div className="min-h-screen grid md:grid-cols-2 bg-gray-100">
 
-      {/* LEFT IMAGE */}
+      {/* Left Image */}
       <div className="hidden md:block relative">
         <Image src="/auth.png" fill alt="Signup Image" className="object-cover" />
       </div>
 
-      {/* RIGHT FORM */}
+      {/* Signup Form */}
       <div className="flex items-center justify-center p-8">
         <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
           <h1 className="text-3xl font-bold text-center">Create Account</h1>
@@ -117,7 +131,7 @@ export default function SignupPage() {
           </form>
 
           <button
-            onClick={googleSignup}
+            onClick={handleGoogleSignup}
             className="w-full flex items-center justify-center gap-3 border p-3 rounded-lg mt-4 hover:bg-gray-50"
           >
             <FcGoogle size={26} /> Continue with Google

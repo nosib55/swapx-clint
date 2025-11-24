@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import Loading from "@/app/loading";
+import Loading from "../../loading";
 import Swal from "sweetalert2";
-import PrivateRoute from "@/app/components/PrivateRoute";
+import ProtectedRoute from "../../components/ProtectedRoute";
 
 export default function ProductDetails() {
   const { id } = useParams();
@@ -77,7 +77,7 @@ export default function ProductDetails() {
   };
 
   return (
-    <PrivateRoute>
+    <ProtectedRoute>
       <div className="px-6 py-20 max-w-5xl mx-auto">
       
       {/* Back Button */}
@@ -133,6 +133,6 @@ export default function ProductDetails() {
         <p className="mt-4 text-gray-700 leading-relaxed">{product.fullDescription}</p>
       </div>
     </div>
-    </PrivateRoute>
+    </ProtectedRoute>
   );
 }

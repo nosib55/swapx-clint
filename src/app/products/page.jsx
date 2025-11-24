@@ -30,15 +30,15 @@ export default function ProductsPage() {
         Explore all available second-hand products on SWAP-X
       </p>
 
-      {/* Loading text */}
+      
       {products.length === 0 && (
 <Loading></Loading>      )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 mt-12">
         {products.map((product) => (
           <Link
-            key={product._id}
-            href={`/products/${product._id}`}
+            key={product._id || product.id}
+            href={`/products/${product._id || product.id}`}
             className="block bg-white border rounded-xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300"
           >
             <img

@@ -2,13 +2,15 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useSession, signIn, signOut } from "next-auth/react";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Image from "next/image";
+
+import { AuthContext } from "./FirebaseAuthProvider";
+import { logoutUser } from "../../firebase/auth";
 
 export default function Navbar() {
   const pathname = usePathname();
-  const { data: session } = useSession();
+  const { user } = useContext(AuthContext);
   const [openMobile, setOpenMobile] = useState(false);
   const [openUserMenu, setOpenUserMenu] = useState(false);
 
@@ -18,7 +20,7 @@ export default function Navbar() {
       ? "bg-blue-600 text-white px-3 py-1 rounded-md"
       : "text-gray-700 hover:bg-blue-100 px-3 py-1 rounded-md";
 
-  const avatar = session?.user?.image || "/default-avatar.png";
+  const avatar = user?.photoURL || "/default-avatar.png";
 
   return (
     <nav className="w-full sticky top-0 bg-white shadow-md z-50">
@@ -26,7 +28,7 @@ export default function Navbar() {
 
         {/* Logo */}
         <Link href="/">
-          <img src="/logo.png" alt="logo" className="w-40" />
+          <img src="/Logo.png" alt="logo" className="w-40" />
         </Link>
 
         {/* Desktop Navigation */}
@@ -37,8 +39,8 @@ export default function Navbar() {
           <Link href="/add-product" className={isActive("/add-product")}>Add Product</Link>
           <Link href="/manage-products" className={isActive("/manage-products")}>Manage</Link>
 
-          {/* Not logged in → Login button goes to /login */}
-          {!session && (
+          {/* Not logged in → login button */}
+          {!user && (
             <Link
               href="/login"
               className="text-gray-700 hover:bg-blue-100 px-3 py-1 rounded-md"
@@ -47,8 +49,8 @@ export default function Navbar() {
             </Link>
           )}
 
-          {/* Logged in → Show Avatar */}
-          {session && (
+          {/* Logged in → avatar */}
+          {user && (
             <div className="relative">
               <Image
                 src={avatar}
@@ -59,16 +61,20 @@ export default function Navbar() {
                 onClick={() => setOpenUserMenu(!openUserMenu)}
               />
 
+              {/* User dropdown */}
               {openUserMenu && (
                 <div className="absolute right-0 mt-3 w-44 bg-white shadow-lg rounded-lg border py-2">
                   <p className="px-4 py-2 text-gray-700 font-medium">
-                    {session.user.name}
+                    {user.displayName || user.email}
                   </p>
-
-                  
-
+                  <Link
+                    href="/profile"
+                    className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                  >
+                    Profile
+                  </Link>
                   <button
-                    onClick={() => signOut()}
+                    onClick={logoutUser}
                     className="w-full text-left px-4 py-2 hover:bg-gray-100 text-red-600"
                   >
                     Logout
@@ -97,7 +103,7 @@ export default function Navbar() {
           <Link href="/manage-products" className={isActive("/manage-products")}>Manage</Link>
 
           {/* MOBILE: Not logged in */}
-          {!session && (
+          {!user && (
             <Link
               href="/login"
               className="text-gray-700 hover:bg-blue-100 px-3 py-1 rounded-md"
@@ -107,15 +113,15 @@ export default function Navbar() {
           )}
 
           {/* MOBILE: Logged in */}
-          {session && (
+          {user && (
             <>
               <div className="flex items-center gap-3">
                 <Image src={avatar} width={40} height={40} className="rounded-full" alt="user" />
-                <p className="font-medium">{session.user.name}</p>
+                <p className="font-medium">{user.displayName || user.email}</p>
               </div>
 
               <button
-                onClick={() => signOut()}
+                onClick={logoutUser}
                 className="text-red-600 hover:bg-red-50 px-3 py-1 rounded-md text-left"
               >
                 Logout
