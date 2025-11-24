@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Swal from "sweetalert2";
 
 export default function AddProductPage() {
   const [title, setTitle] = useState("");
@@ -8,29 +9,76 @@ export default function AddProductPage() {
   const [image, setImage] = useState("");
   const [shortDescription, setShortDescription] = useState("");
   const [details, setDetails] = useState("");
-  const [sellerNumber, setSellerNumber] = useState(""); // ⭐ NEW FIELD
+  const [sellerNumber, setSellerNumber] = useState("");
+  const [location, setLocation] = useState("");
+  const [priority, setPriority] = useState("Medium");
 
-  const handleSubmit = (e) => {
+  // ⭐ Date Field
+  const today = new Date().toISOString().split("T")[0];
+  const [date, setDate] = useState(today);
+
+  // ⭐ Loading State
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log("Product Added:", {
+    const newProduct = {
       title,
-      price,
-      image,
+      price: Number(price),
+      imageUrl: image,
       shortDescription,
-      details,
-      sellerNumber, // ⭐ include seller number
-    });
+      fullDescription: details,
+      sellerNumber,
+      location,
+      priority,
+      date,
+    };
 
-    alert("Product added successfully! (Demo only)");
+    try {
+      setLoading(true);
 
-    // reset form
-    setTitle("");
-    setPrice("");
-    setImage("");
-    setShortDescription("");
-    setDetails("");
-    setSellerNumber(""); // reset
+      const res = await fetch("https://swapx-server.vercel.app/products", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newProduct),
+      });
+
+      if (!res.ok) throw new Error("Failed to add product");
+
+      // ⭐ Sweet Alert Success
+      Swal.fire({
+        title: "Product Added!",
+        text: "Your product has been successfully added.",
+        icon: "success",
+        confirmButtonColor: "#3085d6",
+      });
+
+      // reset form
+      setTitle("");
+      setPrice("");
+      setImage("");
+      setShortDescription("");
+      setDetails("");
+      setSellerNumber("");
+      setLocation("");
+      setPriority("Medium");
+      setDate(today);
+
+    } catch (error) {
+      console.error(error);
+
+      // ⭐ Sweet Alert Error
+      Swal.fire({
+        title: "Error!",
+        text: "There was an issue adding your product.",
+        icon: "error",
+        confirmButtonColor: "#d33",
+      });
+
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -57,7 +105,7 @@ export default function AddProductPage() {
 
         {/* Price */}
         <div>
-          <label className="font-semibold">Price (USD)</label>
+          <label className="font-semibold">Price (TK)</label>
           <input
             type="number"
             className="w-full mt-2 p-3 border rounded-lg"
@@ -74,7 +122,7 @@ export default function AddProductPage() {
           <input
             type="text"
             className="w-full mt-2 p-3 border rounded-lg"
-            placeholder="Ex: https://example.com/photo.jpg"
+            placeholder="Ex: https://example.com/product.jpg"
             value={image}
             onChange={(e) => setImage(e.target.value)}
             required
@@ -94,38 +142,107 @@ export default function AddProductPage() {
           />
         </div>
 
+        {/* Location */}
+        <div>
+          <label className="font-semibold">Location</label>
+          <input
+            type="text"
+            className="w-full mt-2 p-3 border rounded-lg"
+            placeholder="Ex: Dhaka"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            required
+          />
+        </div>
+
+        {/* Priority */}
+        <div>
+          <label className="font-semibold">Priority</label>
+          <div className="mt-2 flex gap-6">
+            <label className="flex items-center gap-2">
+              <input
+                type="radio"
+                name="priority"
+                value="High"
+                checked={priority === "High"}
+                onChange={(e) => setPriority(e.target.value)}
+              />
+              High
+            </label>
+
+            <label className="flex items-center gap-2">
+              <input
+                type="radio"
+                name="priority"
+                value="Medium"
+                checked={priority === "Medium"}
+                onChange={(e) => setPriority(e.target.value)}
+              />
+              Medium
+            </label>
+
+            <label className="flex items-center gap-2">
+              <input
+                type="radio"
+                name="priority"
+                value="Low"
+                checked={priority === "Low"}
+                onChange={(e) => setPriority(e.target.value)}
+              />
+              Low
+            </label>
+          </div>
+        </div>
+
+        {/* Date */}
+        <div>
+          <label className="font-semibold">Date</label>
+          <input
+            type="date"
+            className="w-full mt-2 p-3 border rounded-lg"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            required
+          />
+        </div>
+
         {/* Short Description */}
         <div>
           <label className="font-semibold">Short Description</label>
           <textarea
             className="w-full mt-2 p-3 border rounded-lg"
-            placeholder="Ex: Excellent condition, perfect for beginners"
             rows="3"
+            placeholder="Ex: Excellent condition, perfect for beginners"
             value={shortDescription}
             onChange={(e) => setShortDescription(e.target.value)}
             required
           ></textarea>
         </div>
 
-        {/* Full Details */}
+        {/* Full Description */}
         <div>
-          <label className="font-semibold">Full Details</label>
+          <label className="font-semibold">Full Description</label>
           <textarea
             className="w-full mt-2 p-3 border rounded-lg"
-            placeholder="Complete product details here..."
             rows="5"
+            placeholder="Write full details here..."
             value={details}
             onChange={(e) => setDetails(e.target.value)}
             required
           ></textarea>
         </div>
 
+        {/* Submit Button */}
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition"
+          disabled={loading}
+          className={`w-full p-3 rounded-lg text-white transition
+            ${loading ? "bg-gray-500 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"}
+          `}
         >
-          Add Product
+          {loading ? "Adding..." : "Add Product"}
         </button>
+
       </form>
     </div>
   );

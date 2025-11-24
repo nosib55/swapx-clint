@@ -37,7 +37,7 @@ export default function ManageProducts() {
 
           <tbody>
             {products.map((product) => (
-              <tr key={product.id} className="border-b">
+              <tr key={product._id} className="border-b">
                 
                 {/* Image */}
                 <td className="px-4 py-3">
@@ -51,7 +51,7 @@ export default function ManageProducts() {
                 <td className="px-4 py-3">{product.title}</td>
 
                 {/* Price */}
-                <td className="px-4 py-3">${product.price}</td>
+                <td className="px-4 py-3">{product.price} TK</td>
 
                 {/* Seller Number */}
                 <td className="px-4 py-3">{product.sellerNumber}</td>
