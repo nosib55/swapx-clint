@@ -13,7 +13,7 @@ export default function Loading() {
 
         {/* Loading Text */}
         <p className="text-xl font-semibold text-blue-700 animate-pulse tracking-wide">
-          Please wait...
+          Loading, please wait...
         </p>
       </div>
     </div>
