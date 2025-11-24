@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import PrivateRoute from "../components/PrivateRoute";
 
 export default function ManageProducts() {
   const [products, setProducts] = useState([]);
@@ -20,6 +21,8 @@ export default function ManageProducts() {
   };
 
   return (
+    <PrivateRoute>
+      
     <div className="px-6 py-16 max-w-6xl mx-auto">
       <h1 className="text-4xl font-bold text-center">Manage Products</h1>
 
@@ -89,5 +92,6 @@ export default function ManageProducts() {
         )}
       </div>
     </div>
+    </PrivateRoute>
   );
 }

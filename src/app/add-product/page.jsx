@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Swal from "sweetalert2";
+import PrivateRoute from "../components/PrivateRoute";
 
 export default function AddProductPage() {
   const [title, setTitle] = useState("");
@@ -38,7 +39,7 @@ export default function AddProductPage() {
     try {
       setLoading(true);
 
-      const res = await fetch("https://swapx-server.vercel.app/products", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newProduct),
@@ -82,7 +83,8 @@ export default function AddProductPage() {
   };
 
   return (
-    <div className="px-6 py-20 max-w-3xl mx-auto">
+    <PrivateRoute>
+      <div className="px-6 py-20 max-w-3xl mx-auto">
       <h1 className="text-4xl font-bold text-center">Add New Product</h1>
       <p className="text-gray-600 text-center mt-2">
         Create a new listing on SWAP-X
@@ -245,5 +247,6 @@ export default function AddProductPage() {
 
       </form>
     </div>
+    </PrivateRoute>
   );
 }

@@ -10,6 +10,12 @@ export const authOptions = {
   ],
 
   secret: process.env.NEXTAUTH_SECRET,
+
+  callbacks: {
+    async redirect({ url, baseUrl }) {
+      return baseUrl + "/"; 
+    },
+  },
 };
 
 const handler = NextAuth(authOptions);

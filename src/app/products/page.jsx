@@ -11,7 +11,7 @@ export default function ProductsPage() {
   useEffect(() => {
     async function loadProducts() {
       try {
-        const res = await fetch("https://swapx-server.vercel.app/products");
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products`);
         const data = await res.json();
 
         setProducts(data);

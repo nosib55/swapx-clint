@@ -1,59 +1,27 @@
 export default function Hero() {
   return (
     <section
-      className="
-        relative w-full h-screen 
-        bg-cover bg-center bg-no-repeat 
-        flex items-center justify-center 
-        px-6
-      "
-      style={{ backgroundImage: "url('/hero-bg.png')" }}
+      className="relative w-full h-screen bg-gradient-to-br from-blue-600 to-purple-700 flex items-center justify-center px-8 text-white"
     >
       {/* Overlay */}
-      <div className="absolute inset-0 bg-black/50"></div>
+      <div className="absolute inset-0 bg-black/40"></div>
 
       {/* Content */}
-      <div className="relative z-10 text-center max-w-3xl text-white px-4">
-        <h1 className="
-          text-4xl 
-          sm:text-5xl 
-          md:text-6xl 
-          font-extrabold 
-          drop-shadow-xl
-        ">
-          SWAP-X
+      <div className="relative z-10 max-w-4xl text-center space-y-6">
+        <h1 className="text-5xl md:text-7xl font-extrabold drop-shadow-xl">
+          Discover Great Deals
         </h1>
 
-        <p className="
-          text-base 
-          sm:text-lg 
-          md:text-xl 
-          text-gray-200 
-          mt-4 
-          drop-shadow
-        ">
-          Buy, sell, and discover second-hand products with ease.
+        <p className="text-lg md:text-2xl text-gray-200 max-w-2xl mx-auto">
+          Explore a wide range of gadgets, electronics, and accessories at unbeatable prices.
         </p>
 
-        <button 
-          className="
-            mt-8 
-            px-6 py-3 
-            sm:px-8 sm:py-4 
-            md:px-10 md:py-4 
-            bg-blue-600 
-            text-white 
-            rounded-lg 
-            text-sm 
-            sm:text-base 
-            md:text-lg 
-            hover:bg-blue-700 
-            transition 
-            shadow-lg
-          "
+        <a
+          href="/products"
+          className="inline-block mt-4 px-10 py-4 bg-white text-blue-700 font-semibold rounded-xl shadow-lg hover:bg-gray-200 transition"
         >
-         <a href="/products">Start Exploring</a>
-        </button>
+          Browse Products
+        </a>
       </div>
     </section>
   );

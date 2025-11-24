@@ -10,19 +10,19 @@ import "swiper/css/pagination";
 export default function Testimonials() {
   const reviews = [
     {
-      name: "Aisha Ahmed",
+      name: "Monowar Hossain",
       text: "SWAP-X made selling my old gadgets super fast and easy.",
-      avatar: "https://i.pravatar.cc/150?img=47",
+      avatar: "https://i.ibb.co.com/Kxk9npws/476966714-1205433047859633-5515135034542071864-n.jpg",
     },
     {
-      name: "David Miller",
+      name: "Sozib Ahmed",
       text: "Perfect place to find used electronics at great prices.",
-      avatar: "https://i.pravatar.cc/150?img=12",
+      avatar: "https://i.ibb.co.com/yGwQwSQ/487864940-576365812126246-7892461841355120818-n.jpg",
     },
     {
-      name: "Sofia Khan",
+      name: "Joy Das",
       text: "Smooth experience browsing listings. Very clean UI.",
-      avatar: "https://i.pravatar.cc/150?img=32",
+      avatar: "https://i.ibb.co.com/9kgjdFxS/486775652-674392678308605-2891941053523452899-n.jpg",
     },
     {
       name: "John Adams",

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Loading from "@/app/loading";
 import Swal from "sweetalert2";
+import PrivateRoute from "@/app/components/PrivateRoute";
 
 export default function ProductDetails() {
   const { id } = useParams();
@@ -14,7 +15,7 @@ export default function ProductDetails() {
   useEffect(() => {
     async function fetchProduct() {
       try {
-        const res = await fetch(`https://swapx-server.vercel.app/products/${id}`);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products/${id}`);
 
         if (!res.ok) {
           throw new Error("Failed to fetch product");
@@ -76,7 +77,8 @@ export default function ProductDetails() {
   };
 
   return (
-    <div className="px-6 py-20 max-w-5xl mx-auto">
+    <PrivateRoute>
+      <div className="px-6 py-20 max-w-5xl mx-auto">
       
       {/* Back Button */}
       <button
@@ -131,5 +133,6 @@ export default function ProductDetails() {
         <p className="mt-4 text-gray-700 leading-relaxed">{product.fullDescription}</p>
       </div>
     </div>
+    </PrivateRoute>
   );
 }
