@@ -63,7 +63,7 @@ export default function ManageProducts() {
                     <td className="px-4 py-3">{product.price} TK</td>
 
                     {/* Actions */}
-                    <td className="px-4 py-3 flex gap-3">
+                   <td className="px-4 py-3 flex gap-3 flex-wrap">
 
                       {/* View Button */}
                       <Link
