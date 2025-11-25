@@ -13,9 +13,12 @@ export default function ManageProducts() {
     setProducts(stored);
   }, []);
 
-  // Delete item
+  // Delete item (supports id or _id)
   const handleDelete = (id) => {
-    const updated = products.filter((p) => p.id !== id);
+    const updated = products.filter(
+      (p) => (p.id || p._id) !== id
+    );
+
     setProducts(updated);
     localStorage.setItem("cartProducts", JSON.stringify(updated));
   };
@@ -32,53 +35,56 @@ export default function ManageProducts() {
                 <th className="px-4 py-3">Image</th>
                 <th className="px-4 py-3">Title</th>
                 <th className="px-4 py-3">Price</th>
-                <th className="px-4 py-3">Seller</th>
                 <th className="px-4 py-3">Actions</th>
               </tr>
             </thead>
 
             <tbody>
-              {products.map((product, index) => (
-                <tr
-                  key={product.id ?? product._id ?? `${product.title}-${index}`}
-                  className="border-b"
-                >
-                  {/* Image */}
-                  <td className="px-4 py-3">
-                    <img
-                      src={product.image}
-                      className="w-16 h-16 rounded-lg object-cover"
-                      alt={product.title}
-                    />
-                  </td>
+              {products.map((product, index) => {
+                const key = product.id || product._id || `${product.title}-${index}`;
+                const viewId = product.id || product._id;
 
-                  {/* Title */}
-                  <td className="px-4 py-3">{product.title}</td>
+                return (
+                  <tr key={key} className="border-b">
 
-                  {/* Price */}
-                  <td className="px-4 py-3">{product.price} TK</td>
+                    {/* Image */}
+                    <td className="px-4 py-3">
+                      <img
+                        src={product.imageUrl || product.image}
+                        className="w-16 h-16 rounded-lg object-cover"
+                        alt={product.title}
+                      />
+                    </td>
 
-                  {/* Seller Number */}
-                  <td className="px-4 py-3">{product.sellerNumber}</td>
+                    {/* Title */}
+                    <td className="px-4 py-3">{product.title}</td>
 
-                  {/* Actions */}
-                  <td className="px-4 py-3 flex gap-3">
-                    <Link
-                      href={`/products/${product.id}`}
-                      className="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 transition"
-                    >
-                      View
-                    </Link>
+                    {/* Price */}
+                    <td className="px-4 py-3">{product.price} TK</td>
 
-                    <button
-                      onClick={() => handleDelete(product.id)}
-                      className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition"
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
+                    {/* Actions */}
+                    <td className="px-4 py-3 flex gap-3">
+
+                      {/* View Button */}
+                      <Link
+                        href={`/products/${viewId}`}
+                        className="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 transition"
+                      >
+                        View
+                      </Link>
+
+                      {/* Delete Button */}
+                      <button
+                        onClick={() => handleDelete(viewId)}
+                        className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition"
+                      >
+                        Delete
+                      </button>
+                    </td>
+
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
 
