@@ -130,11 +130,6 @@ export default function ProductsPage() {
                 {product.shortDescription}
               </p>
 
-              <p className="text-gray-700 mt-3 text-sm">
-                Seller:{" "}
-                <span className="font-semibold">{product.sellerNumber}</span>
-              </p>
-
               <Link href={`/products/${product._id || product.id}`}>
                 <button className="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
                   View Details
