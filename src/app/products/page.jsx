@@ -7,13 +7,14 @@ import Loading from "../loading";
 export default function ProductsPage() {
   const [products, setProducts] = useState([]);
 
-  // Search + Filter States
+  // Search + Filter
   const [search, setSearch] = useState("");
   const [locationFilter, setLocationFilter] = useState("");
 
-  // Sort State
-  const [sortOrder, setSortOrder] = useState(""); // LOW or HIGH
+  // Sorting
+  const [sortOrder, setSortOrder] = useState("");
 
+  // Image Preview
   const [previewImage, setPreviewImage] = useState(null);
 
   useEffect(() => {
@@ -29,10 +30,10 @@ export default function ProductsPage() {
     loadProducts();
   }, []);
 
-  // UNIQUE LOCATIONS FOR FILTER
+  // UNIQUE LOCATIONS
   const locations = [...new Set(products.map((p) => p.location))];
 
-  // SEARCH + FILTER + SORT LOGIC
+  // FILTER + SORT LOGIC
   const filteredProducts = products
     .filter((product) => {
       const matchesSearch = product.title
@@ -58,9 +59,8 @@ export default function ProductsPage() {
         Explore all available second-hand products on SWAP-X
       </p>
 
-      {/* Search + Location + Sort Filter */}
+      {/* Search + Location + Sort */}
       <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
-
         {/* Search */}
         <input
           type="text"
@@ -84,7 +84,7 @@ export default function ProductsPage() {
           ))}
         </select>
 
-        {/* Sort by Price */}
+        {/* Sort */}
         <select
           className="border p-3 rounded-lg w-full"
           value={sortOrder}
@@ -104,35 +104,32 @@ export default function ProductsPage() {
         {filteredProducts.map((product) => (
           <div
             key={product._id || product.id}
-            className="block bg-white border rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300"
+            className="bg-white rounded-xl border hover:shadow-xl transition-all duration-300 overflow-hidden"
           >
-            {/* IMAGE PREVIEW */}
+            {/* IMAGE (FULL – no cropping) */}
             <div
-              className="overflow-hidden rounded-t-xl cursor-pointer"
+              className="w-full bg-gray-100 cursor-pointer overflow-hidden"
               onClick={() => setPreviewImage(product.imageUrl)}
             >
               <img
                 src={product.imageUrl}
                 alt={product.title}
-                className="w-full h-56 object-cover transform hover:scale-110 transition duration-500"
+                className="w-full h-auto object-contain hover:scale-105 transition duration-500"
               />
             </div>
 
-            {/* DETAILS */}
+            {/* CONTENT */}
             <div className="p-4">
-              <h3 className="font-bold text-xl">{product.title}</h3>
+              <h3 className="font-semibold text-lg text-gray-800 line-clamp-2 leading-tight">
+                {product.title}
+              </h3>
 
-              <p className="text-blue-600 font-semibold mt-2 text-lg">
-                {product.price} TK
+              <p className="text-orange-600 font-bold text-xl mt-2">
+                ৳{product.price}
               </p>
 
-              <p className="text-gray-600 text-sm mt-2 line-clamp-2">
+              <p className="text-gray-500 text-sm mt-1 line-clamp-2">
                 {product.shortDescription}
-              </p>
-
-              <p className="text-gray-700 mt-3 text-sm">
-                Seller:{" "}
-                <span className="font-semibold">{product.sellerNumber}</span>
               </p>
 
               <Link href={`/products/${product._id || product.id}`}>

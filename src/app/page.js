@@ -4,6 +4,7 @@ import HowItWorks from './components/HowItWorks';
 import WhyUs from './components/WhyUs';
 import Testimonials from './components/Testimonials';
 import HomeProducts from './components/HomeProducts';
+import TwoImageFadeIn from './img-fade/page';
 
  export default function page() {
   return (
@@ -13,6 +14,7 @@ import HomeProducts from './components/HomeProducts';
       <HowItWorks></HowItWorks>
       <WhyUs></WhyUs>
       <Testimonials></Testimonials>
+      <TwoImageFadeIn></TwoImageFadeIn>
     </div>
   );
 };

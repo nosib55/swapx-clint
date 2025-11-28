@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Swal from "sweetalert2";
 import ProtectedRoute from "../components/ProtectedRoute";
+import { auth } from "../../firebase/config";
 
 export default function AddProductPage() {
   const [title, setTitle] = useState("");
@@ -21,6 +22,13 @@ export default function AddProductPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const user = auth.currentUser;
+
+    if (!user) {
+      Swal.fire("Error", "Please login first!", "error");
+      return;
+    }
+
     const newProduct = {
       title,
       price: Number(price),
@@ -31,6 +39,7 @@ export default function AddProductPage() {
       location,
       priority,
       date,
+      email: user.email, // ⭐ Fireabse user email add
     };
 
     try {
@@ -45,13 +54,12 @@ export default function AddProductPage() {
       if (!res.ok) throw new Error("Failed to add product");
 
       Swal.fire({
-        title: "Product Added!",
-        text: "Your product has been successfully added.",
+        title: "Success!",
+        text: "Product added successfully.",
         icon: "success",
-        confirmButtonColor: "#3085d6",
       });
 
-      // reset form
+      // Reset form
       setTitle("");
       setPrice("");
       setImage("");
@@ -67,9 +75,8 @@ export default function AddProductPage() {
 
       Swal.fire({
         title: "Error!",
-        text: "There was an issue adding your product.",
+        text: "Failed to add product.",
         icon: "error",
-        confirmButtonColor: "#d33",
       });
 
     } finally {
@@ -86,7 +93,8 @@ export default function AddProductPage() {
         </p>
 
         <form onSubmit={handleSubmit} className="mt-10 space-y-6">
-          {/* Title */}
+
+          {/* PRODUCT TITLE */}
           <div>
             <label className="font-semibold">Product Title</label>
             <input
@@ -99,20 +107,20 @@ export default function AddProductPage() {
             />
           </div>
 
-          {/* Price */}
+          {/* PRICE */}
           <div>
             <label className="font-semibold">Price (TK)</label>
             <input
               type="number"
               className="w-full mt-2 p-3 border rounded-lg"
-              placeholder="Ex: 150"
+              placeholder="Ex: 1500"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
               required
             />
           </div>
 
-          {/* Image URL */}
+          {/* IMAGE URL */}
           <div>
             <label className="font-semibold">Image URL</label>
             <input
@@ -125,7 +133,7 @@ export default function AddProductPage() {
             />
           </div>
 
-          {/* Seller Number */}
+          {/* SELLER NUMBER */}
           <div>
             <label className="font-semibold">Seller Phone Number</label>
             <input
@@ -138,7 +146,7 @@ export default function AddProductPage() {
             />
           </div>
 
-          {/* Location */}
+          {/* LOCATION */}
           <div>
             <label className="font-semibold">Location</label>
             <input
@@ -151,7 +159,7 @@ export default function AddProductPage() {
             />
           </div>
 
-          {/* Priority */}
+          {/* PRIORITY */}
           <div>
             <label className="font-semibold">Priority</label>
             <div className="mt-2 flex gap-6">
@@ -170,7 +178,7 @@ export default function AddProductPage() {
             </div>
           </div>
 
-          {/* Date */}
+          {/* DATE */}
           <div>
             <label className="font-semibold">Date</label>
             <input
@@ -182,39 +190,39 @@ export default function AddProductPage() {
             />
           </div>
 
-          {/* Short Description */}
+          {/* SHORT DESCRIPTION */}
           <div>
             <label className="font-semibold">Short Description</label>
             <textarea
               className="w-full mt-2 p-3 border rounded-lg"
               rows="3"
-              placeholder="Ex: Excellent condition, perfect for beginners"
+              placeholder="Short overview..."
               value={shortDescription}
               onChange={(e) => setShortDescription(e.target.value)}
               required
             ></textarea>
           </div>
 
-          {/* Full Description */}
+          {/* FULL DESCRIPTION */}
           <div>
             <label className="font-semibold">Full Description</label>
             <textarea
               className="w-full mt-2 p-3 border rounded-lg"
               rows="5"
-              placeholder="Write full details here..."
+              placeholder="Write full details..."
               value={details}
               onChange={(e) => setDetails(e.target.value)}
               required
             ></textarea>
           </div>
 
-          {/* Submit Button */}
+          {/* SUBMIT BUTTON */}
           <button
             type="submit"
             disabled={loading}
             className={`w-full p-3 rounded-lg text-white transition
-            ${loading ? "bg-gray-500 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"}
-          `}
+              ${loading ? "bg-gray-500 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"}
+            `}
           >
             {loading ? "Adding..." : "Add Product"}
           </button>

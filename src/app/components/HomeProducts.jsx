@@ -42,20 +42,32 @@ export default function HomeProducts() {
           <Link
             key={product._id}
             href={`/products/${product._id}`}
-            className="block bg-white border rounded-xl shadow hover:shadow-lg hover:-translate-y-1 transition"
+            className="block bg-white border rounded-xl shadow hover:shadow-xl transition-all duration-300 overflow-hidden h-full"
           >
-            <img
-              src={product.imageUrl}
-              alt={product.title}
-              className="w-full h-48 object-cover rounded-t-xl"
-            />
+            {/* IMAGE — fixed same height */}
+            <div className="w-full h-56 bg-gray-100 overflow-hidden">
+              <img
+                src={product.imageUrl}
+                alt={product.title}
+                className="w-full h-full object-cover"
+              />
+            </div>
 
-            <div className="p-4">
-              <h3 className="text-lg font-semibold">{product.title}</h3>
-              <p className="text-blue-600 font-bold mt-1">{product.price} TK</p>
-              <p className="text-gray-600 text-sm mt-1 line-clamp-2">
-                {product.shortDescription}
-              </p>
+            {/* CONTENT */}
+            <div className="p-4 h-40 flex flex-col justify-between">
+              <div>
+                <h3 className="text-lg font-semibold line-clamp-2">
+                  {product.title}
+                </h3>
+
+                <p className="text-blue-600 font-bold mt-2">
+                  {product.price} TK
+                </p>
+
+                <p className="text-gray-600 text-sm line-clamp-2 mt-1">
+                  {product.shortDescription}
+                </p>
+              </div>
             </div>
           </Link>
         ))}
