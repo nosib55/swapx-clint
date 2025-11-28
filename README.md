@@ -1,36 +1,95 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# SwapX – Buy & Sell New & Used Products
 
-## Getting Started
+SwapX is a modern, responsive marketplace platform built using Next.js (App Router). Users can buy and sell both new and second-hand products. The app includes Firebase Authentication, protected routes, product management, product details, sorting, search, and a clean responsive UI.
 
-First, run the development server:
+## Live Demo
+https://swapx-clint-2cmx.vercel.app/
 
-```bash
+## Features
+
+### Public Pages
+- Home page with hero and sections
+- Products listing page (search + sort)
+- Product details page
+- About page
+
+### Authentication (Firebase)
+- Email/Password login
+- Google login
+- Protected routes using a custom ProtectedRoute component
+
+### Product Features
+- Add new products
+- Manage user-added products (view/delete)
+- Search products
+- Sort by price (Low → High / High → Low)
+- Image preview modal
+- Responsive UI
+
+## Tech Stack
+
+### Frontend
+- Next.js 16 (App Router)
+- React
+- TailwindCSS
+- Firebase Authentication
+- SweetAlert2
+
+### Backend
+- Node.js + Express API + Mongodb
+
+## Installation & Setup
+
+### 1. Install dependencies
+npm install
+
+### 2. Create a `.env.local` file and add:
+NEXT_PUBLIC_FIREBASE_API_KEY=your_key
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_domain
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your_bucket
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
+
+NEXT_PUBLIC_API_URL=https://your-backend-api.com
+
+### 3. Start development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 4. Build for production
+npm run build
+npm start
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Route Summary
 
-## Learn More
+### Public Routes
+/               → Home page
+/about          → About page
+/products       → Products list
+/products/[id]  → Product details
+/login          → Login page
+/signup         → Signup page
 
-To learn more about Next.js, take a look at the following resources:
+### Protected Routes
+/add-product      → Add product
+/manage-products  → Manage user products
+/profile          → Update user profile
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Requirements Completed
+- Fully responsive landing page
+- Sticky navbar with login/logout
+- Firebase authentication (Google + Email)
+- Protected add/manage product routes
+- Product details page
+- Sorting and search
+- Clean, modern UI with TailwindCSS
+- Firebase Auth integration
+- Image preview modal
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Deployment
+Frontend: Vercel,
 
-## Deploy on Vercel
+Backend: Vercel 
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
