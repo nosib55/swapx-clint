@@ -44,12 +44,12 @@ export default function HomeProducts() {
             href={`/products/${product._id}`}
             className="block bg-white border rounded-xl shadow hover:shadow-xl transition-all duration-300 overflow-hidden h-full"
           >
-            {/* IMAGE — fixed same height */}
-            <div className="w-full h-56 bg-gray-100 overflow-hidden">
+            {/* FULL IMAGE VIEW (object-contain) */}
+            <div className="w-full h-56 bg-white flex items-center justify-center overflow-hidden">
               <img
                 src={product.imageUrl}
                 alt={product.title}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-contain"
               />
             </div>
 
